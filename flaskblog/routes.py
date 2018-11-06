@@ -3,9 +3,9 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt, mail
-from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
+from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, AddCommentForm,
                              PostForm, RequestResetForm, ResetPasswordForm)
-from flaskblog.models import User, Post
+from flaskblog.models import User, Post, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 
@@ -13,8 +13,7 @@ from flask_mail import Message
 @app.route("/")
 @app.route("/home")
 def home():
-    page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    posts = Post.query.all()
     return render_template('home.html', posts=posts)
 
 
@@ -112,7 +111,9 @@ def new_post():
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post)
+    comments = Comment.query.filter_by(post_id=post_id)
+    form = AddCommentForm()
+    return render_template('post.html', title=post.title, post=post, form=form, comments=comments)
 
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
@@ -199,3 +200,20 @@ def reset_token(token):
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
+
+
+@app.route("/post/<int:post_id>",methods=['GET','POST'])
+def comment_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    form = AddCommentForm()
+    if form.validate_on_submit():
+        db.create_all()
+        if current_user.is_authenticated:
+            comment = Comment(body=form.body.data,post_id=post_id,username=current_user.username)
+        else:
+            comment = Comment(body=form.body.data,post_id=post_id,username='Anonymous')
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been added to the post', 'success')
+        return redirect(url_for('post',post_id=post_id))
+    return render_template('post.html', title=post.title, form=form ,post=post)
