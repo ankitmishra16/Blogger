@@ -11,6 +11,10 @@ from flask_mail import Message
 
 
 @app.route("/")
+def welcome():
+    return render_template('welcome.html')
+
+
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
