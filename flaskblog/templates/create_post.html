@@ -3,6 +3,8 @@
         <div class="content-section">
             <form method="POST" action="">
                 {{ form.hidden_tag() }}
+            			{{ form.csrf_token }}
+
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4">{{ legend }}</legend>
                     <div class="form-group">
@@ -28,6 +30,12 @@
                                 {% endfor %}
                             </div>
                         {% else %}
+                            {#{% if not form.content.data == None  %}
+                                {{ ckeditor.create(value=form.content.data) }}
+                            {% else %}
+                                {{ ckeditor.create() }}
+                            {% endif %}#}
+
                             {{ form.content(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
@@ -37,4 +45,6 @@
                 </div>
             </form>
         </div>
+    {{ ckeditor.load() }}
+	{{ ckeditor.config(name='content') }}
 {% endblock content %}

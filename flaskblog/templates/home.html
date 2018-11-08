@@ -10,7 +10,7 @@
                         </div>
                         <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
                         {% for item in post.content.split('\n')[:5] %}
-                            <p class="article-content">{{ item }}</p>
+                            <p class="article-content">{{ item|safe }}</p>
                         {% endfor %}
                     </div>
                 </article>

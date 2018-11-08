@@ -1,14 +1,14 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, send_from_directory
 from flaskblog import app, db, bcrypt, mail
 from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, AddCommentForm,
                              PostForm, RequestResetForm, ResetPasswordForm)
 from flaskblog.models import User, Post, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
-
+from flask_ckeditor import CKEditor, CKEditorField, upload_fail, upload_success
 
 @app.route("/")
 def welcome():
@@ -222,5 +222,22 @@ def comment_post(post_id):
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added to the post', 'success')
-        return redirect(url_for('post',post_id=post_id))
+        return redirect(url_for('post', post_id=post_id))
     return render_template('post.html', title=post.title, form=form ,post=post)
+
+
+@app.route('/files/<filename>')
+def uploaded_files(filename):
+    path = app.config['UPLOADED_PATH']
+    return send_from_directory(path, filename)
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    f = request.files.get('upload')
+    extension = f.filename.split('.')[1].lower()
+    if extension not in ['jpg', 'gif', 'png', 'jpeg']:
+        return upload_fail(message='Image only!')
+    f.save(os.path.join(app.config['UPLOADED_PATH'], f.filename))
+    url = url_for('uploaded_files', filename=f.filename)
+    return upload_success(url=url)

@@ -1,15 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="col-md-8">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
             <div class="media-body">
@@ -24,7 +14,7 @@
                     {% endif %}
                 </div>
                 <h2 class="article-title">{{ post.title }}</h2>
-                <p class="article-content1">{{ post.content }}</p>
+                <p class="article-content1">{{ post.content|safe }}</p>
 
 
             </div>
@@ -89,7 +79,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
 
 
