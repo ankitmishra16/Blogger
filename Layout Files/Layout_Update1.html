@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Layout</title>
+
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script type="text/javascript">
+   
+    function checkin( elem, head, filling )
+    {
+      document.getElementById("titleM").innerHTML = head;
+      document.getElementById("textM").innerHTML = filling;
+
+    }
+</script>
+
+    <link  rel="stylesheet" href="Layout.css">
+
+</head>
+<body>
+
+  <div class="modal" id="profile" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleM"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="textM"></p>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+               <div id="dismiss">
+                 <i class="fas fa-arrow-left"></i>
+               </div>
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Writer's name
+                    </a>
+                </li>
+                <a href="#"><img src="DP.JPG"><!-- Profile picture--></a>
+                <br>
+                <br>
+                <li>
+                    <button type="button" class="block" data-toggle="modal" data-target="#profile" onclick="checkin(this,'Proffesion','Student')">Proffesion</button>
+                </li>
+                <li>
+                    <button type="button" class="block" data-toggle="modal" data-target="#profile" onclick="checkin(this,'Contact','7525077204')">Contact</button>
+                </li>
+                <li>
+                    <button type="button" class="block" data-toggle="modal" data-target="#profile" onclick="checkin(this,'About', 'I love to fuck girls')">About</button>
+                </li>
+                <li>
+            </ul>
+        </div>
+ <!--  <div class="row">
+    <div class="col-1"> 
+    </div>-->
+    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><img src="https://img.icons8.com/color/50/000000/menu.png"></a>
+    <div class="heading">
+          <h5> Profile of Blogger </h5>
+    </div>  
+      <div class="row">
+        <div class="col-4">
+          <div class="card p-3">
+            <h5 class="card-title">Blog 1</h5>
+            <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+            </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+              
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+        <div class="col-4">
+          <div class="card p-3">
+           <h5 class="card-title">Blog 2</h5>
+           <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+            </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+              
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+        <div class="col-4">
+          <div class="card p-3">
+            <h5 class="card-title">Blog 1</h5>
+            <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+            </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+      </div>
+      <br>
+      <div class="row">
+        <!-- <div class="col-4">
+          <div class="card p-3">
+           <h5 class="card-title">Blog 4</h5>
+           <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+           </footer>
+
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div>  -->
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 5</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+              
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 6</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 7</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+      </div>
+      <br>
+      <div class="row">
+        <!-- <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 8</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div>  -->
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 9</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 10</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 11</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+      </div>
+      <br>
+      <div class="row">
+        <!-- <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 12</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div>  -->
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 13</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 14</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+        <div class="col-4">
+          <div class="card p-3">
+             <h5 class="card-title">Blog 15</h5>
+             <footer class="blockquote-footer">
+                <small class="text-muted">
+                  Created by <cite title="Source Title"><a href="#">Ankit Mishra</a></cite>
+                </small>
+             </footer>
+              <div  class="card-body">
+                <p>Here the 150 words of blog will come</p>
+              </div>
+
+              <div class="button"><a href="#">More</a></div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <!-- <div class="col-4">
+      <div class="card p-3">
+            <img class="card-img-top" src="DP.JPG" alt="DP of blogger">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Ankit  Mishra</li>
+                <li class="list-group-item">Student</li>
+                <li class="list-group-item">India</li>
+              </ul>
+            </div>
+    </div> 
+  </div>  -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
