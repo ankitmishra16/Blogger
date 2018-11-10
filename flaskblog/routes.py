@@ -1,14 +1,14 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, send_from_directory
 from flaskblog import app, db, bcrypt, mail
 from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, AddCommentForm,
                              PostForm, RequestResetForm, ResetPasswordForm)
 from flaskblog.models import User, Post, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
-
+from flask_ckeditor import CKEditor, CKEditorField, upload_fail, upload_success
 
 @app.route("/")
 def welcome():
@@ -19,7 +19,7 @@ def welcome():
 def home():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', posts=posts)
+    return render_template('home_test.html', posts=posts)
 
 
 @app.route("/about")
@@ -70,9 +70,7 @@ def save_picture(form_picture):
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
 
-    output_size = (125, 125)
     i = Image.open(form_picture)
-    i.thumbnail(output_size)
     i.save(picture_path)
 
     return picture_fn
