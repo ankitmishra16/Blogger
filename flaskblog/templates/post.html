@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='post.css') }}">
 {% block content %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
@@ -14,8 +15,9 @@
                     {% endif %}
                 </div>
                 <h2 class="article-title">{{ post.title }}</h2>
-                <p class="article-content1">{{ post.content|safe }}</p>
-
+                    <div id="inside-blog">
+                    {{ post.content|safe }}
+                    </div>
 
             </div>
         </article>
@@ -45,7 +47,40 @@
                 </div>
             </form>
         </div>
+    <!--comments view-->
         {% if comments %}
+            {% for comment in comments %}
+                    <div class="panel panel-white post panel-shadow">
+                        <div class="post-heading">
+                            <div class="pull-left image">
+                                {% if comment.comment_user_id %}
+                                    <a href="{{ url_for('user_posts', username=comment.username) }}">
+                                        <img src="{{ url_for('static', filename='profile_pics/' + comment.commentor.image_file) }}" class="img-circle avatar" alt="{{ comment.username }}'s profile">
+                                    </a>
+                                {% else %}
+                                    <img src="{{ url_for('static', filename='profile_pics/default.jpg') }}" class="img-circle avatar" alt="user profile image">
+                                {% endif %}
+
+                            </div>
+                            <div class="pull-left meta">
+                                <div class="title h5">
+                                    {% if comment.comment_user_id %}
+                                        <a href="{{ url_for('user_posts', username=comment.username) }}"><b>{{ comment.username }}</b></a>
+                                    {% else %}
+                                        <b id="temp">{{ comment.username }}</b>
+                                    {% endif %}
+                                    made a post.
+                                </div>
+                                <h6 class="text-muted time">{{ comment.timestamp.strftime('%Y-%m-%d') }}</h6>
+                            </div>
+                        </div>
+                        <div class="post-description">
+                            <p>{{ comment.body }}</p>
+                        </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {#{% if comments %}
             {% for comment in comments %}
                 {{ comment.body }}
                 <br>
@@ -57,7 +92,7 @@
                 {{ comment.username }}
                 <br>
             {% endfor %}
-        {% endif %}
+        {% endif %}#}
 
 
         <!-- Modal -->
