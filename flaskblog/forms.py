@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskblog.models import User
 from flask_ckeditor import CKEditorField
@@ -39,6 +39,8 @@ class LoginForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
+    full_name = StringField('full_name', validators=[DataRequired, Length(max=30)])
+    gender = RadioField('Gender', choices = [('M','Male'),('F','Female')])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     aboutme = StringField('aboutme')

@@ -11,13 +11,18 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(50), nullable=True)
+    designation = db.Column(db.String)
+    gender = db.Column(db.Boolean)
+    interests = db.Column(db.String(100))
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
-    aboutme = db.Column(db.String(1000), default="about me")
+    aboutme = db.Column(db.String(1000))
     user_comments = db.relationship('Comment', backref='commentor', lazy=True)
+
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
@@ -42,6 +47,7 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    published = db.Column(db.Boolean, default=False)
     comments = db.relationship('Comment', backref='post_comments', lazy=True)
 
     def __repr__(self):
