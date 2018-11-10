@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
+    <div class="blog-grids" id="grid-up">
+        {% for post in posts.items %}
+
+
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src=""{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a></h6>
+            <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+            <p class="card-text">{% for item in post.content.split('\n')[:5] %}
+                            <p>{{ item|safe }}</p>
+                {% endfor %}</p>
+            <a href="#" class="btn btn-primary">Read more</a>
+          </div>
+        </div>
+
+
+
+
+<!--         <div class="grid">
+            <div class="entry-media">
+                <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+            </div>
+            <div class="entry-body">
+                <span class="cat">inspiration</span>
+                <h3><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                <div class="article-metadata">
+                    <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+                {% for item in post.content.split('\n')[:5] %}
+                            <p class="article-content">{{ item|safe }}</p>
+                {% endfor %}
+                <div class="read-more-date">
+                    <a href="{{ url_for('user_posts', username=post.author.username) }}">Read More..</a>
+                </div>
+            </div>
+        </div> -->
+        {% endfor %}
+    {% endblock %}
+        {#<div class="grid col-sm-4">
+            <div class="entry-media">
+                <img src="http://www.csshint.com/wp-content/uploads/2017/05/business-card-1.jpg" alt="">
+            </div>
+            <div class="entry-body">
+                <span class="cat">photoshop</span>
+                <h3><a href="#">40+ Best Free Modern Business Card PSD Templates</a></h3>
+                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut..</p>
+                <div class="read-more-date">
+                    <a href="#">Read More..</a>
+                    <span class="date">3 Hours ago</span>
+                </div>
+            </div>
+        </div>
+        <div class="grid col-sm-4">
+            <div class="entry-media">
+                <img src="DP.JPG" alt="" >
+            </div>
+            <div class="entry-body">
+                <span class="cat">Wordpress</span>
+                <h3><a href="#">34+ Beautiful Free WordPress Blog Themes</a></h3>
+                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut..</p>
+                <div class="read-more-date">
+                    <a href="#">Read More..</a>
+                    <span class="date">3 Hours ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="blog-grids">
+        <div class="grid col-sm-4">
+            <div class="entry-media">
+                <img src="http://www.csshint.com/wp-content/uploads/2017/09/beautiful-buttons-effect.jpg" alt="">
+            </div>
+            <div class="entry-body">
+                <span class="cat">inspiration</span>
+                <h3><a href="#">Beautiful css3 buttons with hover effects</a></h3>
+                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut..</p>
+                <div class="read-more-date">
+                    <a href="#">Read More..</a>
+                    <span class="date">3 Hours ago</span>
+                </div>
+            </div>
+        </div>
+        <div class="grid col-sm-4">
+            <div class="entry-media">
+                <img src="http://www.csshint.com/wp-content/uploads/2017/05/business-card-1.jpg" alt="">
+            </div>
+            <div class="entry-body">
+                <span class="cat">photoshop</span>
+                <h3><a href="#">40+ Best Free Modern Business Card PSD Templates</a></h3>
+                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut..</p>
+                <div class="read-more-date">
+                    <a href="#">Read More..</a>
+                    <span class="date">3 Hours ago</span>
+                </div>
+            </div>
+        </div>
+        <div class="grid col-sm-4">
+            <div class="entry-media">
+                <img src="DP.JPG" alt="" >
+            </div>
+            <div class="entry-body">
+                <span class="cat">Wordpress</span>
+                <h3><a href="#">34+ Beautiful Free WordPress Blog Themes</a></h3>
+                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut..</p>
+                <div class="read-more-date">
+                    <a href="#">Read More..</a>
+                    <span class="date">3 Hours ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>#}
+
