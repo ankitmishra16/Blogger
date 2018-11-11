@@ -11,10 +11,6 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(50), nullable=True)
-    designation = db.Column(db.String)
-    gender = db.Column(db.Boolean)
-    interests = db.Column(db.String(100))
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
@@ -38,7 +34,7 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}', '{self.aboutme}')"
+        return f"User('{self.username}', '{self.email}', '{self.image_file}', '{self.aboutme}', '{self.full_name}')"
 
 
 class Post(db.Model):
@@ -51,7 +47,7 @@ class Post(db.Model):
     comments = db.relationship('Comment', backref='post_comments', lazy=True)
 
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}, '{self.content}')"
+        return f"Post('{self.title}', '{self.date_posted}', '{self.published})"
 
 
 class Comment(db.Model):

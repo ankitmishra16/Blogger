@@ -9,6 +9,7 @@ from flaskblog.models import User, Post, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from flask_ckeditor import CKEditor, CKEditorField, upload_fail, upload_success
+from sqlalchemy import or_
 
 @app.route("/")
 def welcome():
@@ -18,7 +19,7 @@ def welcome():
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    posts = Post.query.filter_by(published=True).order_by(Post.date_posted.desc()).paginate(page=page, per_page=6)
     return render_template('home2.html', posts=posts)
 
 
@@ -105,10 +106,19 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data, author=current_user)
-        db.session.add(post)
-        db.session.commit()
-        flash('Your post has been created!', 'success')
-        return redirect(url_for('home'))
+        if form.submit.data:
+            print("save")
+            post.published = True
+            db.session.add(post)
+            db.session.commit()
+            flash('Your post has been Published!', 'success')
+            return redirect(url_for('home'))
+        elif form.save.data:
+            db.session.add(post)
+            db.session.commit()
+            flash('Your post has been Saved!', 'success')
+            return redirect(url_for('home'))
+
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
 
@@ -119,6 +129,18 @@ def post(post_id):
     comments = Comment.query.filter_by(post_id=post_id)
     form = AddCommentForm()
     return render_template('post.html', title=post.title, post=post, form=form, comments=comments)
+
+
+@app.route("/post/<int:post_id>/publish", methods=['GET', 'POST'])
+@login_required
+def publish_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    post.published = True
+    db.session.commit()
+    flash('Your post has been Published!', 'success')
+    return redirect(url_for('post', post_id=post.id))
 
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
@@ -162,6 +184,35 @@ def user_posts(username):
         .paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
 
+@app.route("/user/<string:username>/all")
+def all_user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user)\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('all_user_posts.html', posts=posts, user=user)
+
+
+@app.route("/user/<string:username>/published")
+def published_user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user, published=True)\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('published_user_posts.html', posts=posts, user=user)
+
+
+@app.route("/user/<string:username>/unpublished")
+@login_required
+def unpublished_user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user, published=False)\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('unpublished_user_posts.html', posts=posts, user=user)
 
 def send_reset_email(user):
     token = user.get_reset_token()

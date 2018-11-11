@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
 
 
-
+hr {
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    color: #333; /* old IE */
+    background-color: #333; /* Modern Browsers */
+}
 
 body {
   background: url(images/bg-01.jpg) no-repeat center center fixed;

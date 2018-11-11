@@ -14,7 +14,8 @@ class RegistrationForm(FlaskForm):
                         validators=[DataRequired(), Email()], render_kw={"placeholder": "Email"})
     password = PasswordField('Password', validators=[DataRequired()], render_kw={"placeholder": "Password"})
     confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')], render_kw={"placeholder": "Confirm Password"})
+                                     validators=[DataRequired(), EqualTo('password')],
+                                     render_kw={"placeholder": "Confirm Password"})
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
@@ -39,8 +40,6 @@ class LoginForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
-    full_name = StringField('full_name', validators=[DataRequired, Length(max=30)])
-    gender = RadioField('Gender', choices = [('M','Male'),('F','Female')])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     aboutme = StringField('aboutme')
@@ -63,7 +62,8 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = CKEditorField('Content', validators=[DataRequired()])
-    submit = SubmitField('Post')
+    submit = SubmitField('Publish')
+    save = SubmitField('Save for Later')
 
 
 class RequestResetForm(FlaskForm):
@@ -85,5 +85,5 @@ class ResetPasswordForm(FlaskForm):
 
 
 class AddCommentForm(FlaskForm):
-    body = StringField('Body',validators=[DataRequired()])
+    body = StringField('Body', validators=[DataRequired()])
     submit = SubmitField("Post")

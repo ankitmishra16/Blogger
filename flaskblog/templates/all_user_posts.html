@@ -26,15 +26,6 @@
             {% endif %}
         {% endfor %}
 
-    {% block sidebar %}
-        <img class="imgsrc rounded-circle" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
-        <h2 align="center">{{ current_user.username }}</h2>
-        <h3 align="center">About me</h3>
-        <hr>
-        {% if current_user.aboutme %}
-            <p align="center">{{ current_user.aboutme }}</p>
-        {% endif %}
-    {% endblock %}
 
 {% endblock %}
 

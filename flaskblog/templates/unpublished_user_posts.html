@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
-        <h1 class="mb-3">Posts by {{ user.username }} ({{ posts.total }})</h1>
+        <h1 class="mb-3">Unpublished Posts by {{ user.username }} ({{ posts.total }})</h1>
+        {% if posts.total == 0 %}
+            <h3 align="center">No Unublished Posts</h3>
+        {% else %}
         {% for post in posts.items %}
             <article class="media content-section">
                 <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
@@ -14,6 +17,7 @@
                 </div>
             </article>
         {% endfor %}
+        {% endif %}
         {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
             {% if page_num %}
                 {% if posts.page == page_num %}
@@ -25,6 +29,7 @@
                 ...
             {% endif %}
         {% endfor %}
+{% endblock %}
 
     {% block sidebar %}
         <img class="imgsrc rounded-circle" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
@@ -36,6 +41,5 @@
         {% endif %}
     {% endblock %}
 
-{% endblock %}
 
 

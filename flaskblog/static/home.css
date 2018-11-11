@@ -36,7 +36,7 @@ body{
 .blog-grids .grid {
     background-color: #fff;
     width: calc(33% - 30px);
-    max-height: 500px;
+    height: 650px;
     overflow: hidden;
     float: left;
     padding: 15px;
@@ -52,8 +52,8 @@ body{
 .entry-media img {
     border-radius: 10px;
     width: 100%;
-    max-height: 100%;
-    object-fit: fill;
+    height: 200px;
+    object-fit: cover;
 }
 
 .entry-body {
