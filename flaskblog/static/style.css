@@ -16,8 +16,11 @@ body {
   -o-background-size: cover;
   background-size: cover;
   height: 100%;
+    padding-top: 5%;
 }
-
+.ui-widget {
+    padding-top: 3%;
+}
 #collapsibleNavbar{
   font-family: 'Poppins', sans-serif;
   color: #222;
@@ -116,6 +119,9 @@ a.article-title:hover {
 
 .navbar{
   padding: 0.8rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .navbar-nav li{
@@ -129,4 +135,13 @@ a.article-title:hover {
 .outside-header {
   padding-top: 20px;
   padding-left: 10px;
+}
+
+.profile {
+    padding-top: 20px;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: xx-large;
 }

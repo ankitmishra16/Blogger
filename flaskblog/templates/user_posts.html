@@ -26,16 +26,33 @@
             {% endif %}
         {% endfor %}
 
-    {% block sidebar %}
-        <img class="imgsrc rounded-circle" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
-        <h2 align="center">{{ current_user.username }}</h2>
-        <h3 align="center">About me</h3>
-        <hr>
-        {% if current_user.aboutme %}
-            <p align="center">{{ current_user.aboutme }}</p>
-        {% endif %}
-    {% endblock %}
 
+{% endblock %}
+
+{% block sidebar %}
+    <div class="profile">
+        <div class="card" style="width: 18rem;position: fixed">
+          <img class="card-img-top" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{ current_user.username }}</h5>
+            {% if current_user.aboutme %}
+                <h6 class="card-subtitle mb-2 text-muted">About me</h6>
+                <hr>
+                <p class="card-text">{{ current_user.aboutme }}</p>
+            {% endif %}
+{#            <a href="#" class="btn btn-primary">Go somewhere</a>#}
+          </div>
+        </div>
+    </div>
+
+
+{#        <img class="imgsrc rounded-circle" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">#}
+{#        <h2 align="center">{{ current_user.username }}</h2>#}
+{#        <h3 align="center">About me</h3>#}
+{#        <hr>#}
+{#        {% if current_user.aboutme %}#}
+{#            <p align="center">{{ current_user.aboutme }}</p>#}
+{#        {% endif %}#}
 {% endblock %}
 
 

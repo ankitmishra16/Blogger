@@ -139,3 +139,11 @@
 #inside-blog {
 
 }
+
+.hover-item {
+	background-color: #afc7ed;
+}
+
+.hover-item:hover {
+	background-color: #86a9e0;
+}
