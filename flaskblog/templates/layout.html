@@ -29,7 +29,7 @@
                     <ul class="navbar-nav ml-auto mr-auto">
                          <li class="nav-item active">
                             <div class="ui-widget input-group md-form form-sm form-1 pl-0">
-                             <form><input class="form-control my-0 py-1" autocomplete="on" id="tag" type="text" placeholder="Search" style="width: fit-content" aria-label="Search"></form>
+                             <form action="{{ url_for('search')}}" method="post"><input class="form-control my-0 py-1"  autocomplete="on" id="tag" name="tag" type="text" placeholder="Search" style="width: fit-content" aria-label="Search"></form>
                             </div>
                         </li>
                         <li class="nav-item active">
@@ -98,11 +98,11 @@
             var availableTags = [
                 "Technology",
                 "Science",
-                "Devices",
-                "Gadget",
-                "Tatti",
-                "Tooti",
-                "tera"
+                "Fashion",
+                "Food",
+                "Sport",
+                "Adventure",
+                "Other"
             ];
             $( "#tag" ).autocomplete({
                 source: availableTags

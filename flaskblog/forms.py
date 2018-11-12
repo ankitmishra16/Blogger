@@ -3,9 +3,13 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from flaskblog.models import User
+from flaskblog.models import User, Choice
 from flask_ckeditor import CKEditorField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
+
+def choice_query():
+    return Choice.query
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
@@ -62,6 +66,7 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = CKEditorField('Content', validators=[DataRequired()])
+    user_tag = QuerySelectField('Tag', query_factory=choice_query, allow_blank=True,get_label='name',validators=[DataRequired()])
     submit = SubmitField('Publish')
     save = SubmitField('Save for Later')
 
@@ -87,3 +92,6 @@ class ResetPasswordForm(FlaskForm):
 class AddCommentForm(FlaskForm):
     body = StringField('Body', validators=[DataRequired()])
     submit = SubmitField("Post")
+
+
+

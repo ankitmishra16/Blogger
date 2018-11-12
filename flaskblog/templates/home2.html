@@ -60,10 +60,14 @@
                         <h4 style="align-content: center; font: diagonal-fractions">Popular Posts</h4>
                     </a>
                 </div>
-              <div class="collapse" id="popular_posts">
-                <a href="#"><li class="list-group-item">Put the  head here</li></a>
-              </div>
 
+                {% for popular in query1 %}
+                    {% if popular %}
+                        <div class="collapse" id="popular_posts">
+                            <a href="{{ url_for('post', post_id=popular.post_id) }}"><li class="list-group-item">{{ popular.title }}</li></a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
               </ul>
               <ul class="list-group list-group-flush">
                   <div class="card-header" style="background-color: darkcyan">

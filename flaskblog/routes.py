@@ -5,11 +5,12 @@ from flask import render_template, url_for, flash, redirect, request, abort, sen
 from flaskblog import app, db, bcrypt, mail
 from flaskblog.forms import (RegistrationForm, LoginForm, UpdateAccountForm, AddCommentForm,
                              PostForm, RequestResetForm, ResetPasswordForm)
-from flaskblog.models import User, Post, Comment
+from flaskblog.models import User, Post, Comment, PostLike, Choice
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from flask_ckeditor import CKEditor, CKEditorField, upload_fail, upload_success
-from sqlalchemy import or_
+from sqlalchemy import func
+
 
 @app.route("/")
 def welcome():
@@ -20,7 +21,11 @@ def welcome():
 def home():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(published=True).order_by(Post.date_posted.desc()).paginate(page=page, per_page=6)
-    return render_template('home2.html', posts=posts)
+    query1 = (db.session.query(PostLike.post_id, PostLike.title, func.count(PostLike.post_id))
+              .group_by(PostLike.post_id, PostLike.title)
+              .order_by(func.count(PostLike.post_id).desc())
+              .limit(5))
+    return render_template('home2.html', posts=posts, query1=query1)
 
 
 @app.route("/about")
@@ -104,8 +109,9 @@ def account():
 @login_required
 def new_post():
     form = PostForm()
+
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        post = Post(title=form.title.data, content=form.content.data, author=current_user, user_tag=form.user_tag.data.name)
         if form.submit.data:
             print("save")
             post.published = True
@@ -153,12 +159,14 @@ def update_post(post_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        post.user_tag = form.user_tag.data.name
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
+        form.user_tag.data = post.user_tag
     return render_template('create_post.html', title='Update Post',
                            form=form, legend='Update Post')
 
@@ -290,3 +298,22 @@ def upload():
     f.save(os.path.join(app.config['UPLOADED_PATH'], f.filename))
     url = url_for('uploaded_files', filename=f.filename)
     return upload_success(url=url)
+
+
+@app.route("/post/like/<int:post_id>/<action>")
+@login_required
+def like_action(post_id, action):
+    post = Post.query.filter_by(id=post_id).first_or_404()
+    if action == 'like':
+        current_user.like_post(post)
+        db.session.commit()
+    if action == 'unlike':
+        current_user.unlike_post(post)
+        db.session.commit()
+    return redirect(request.referrer)
+
+@app.route("/search", methods=['Post'])
+def search():
+    value = request.form.get('tag')
+    posts = Post.query.filter_by(user_tag=value).all()
+    return render_template('search_result.html', value=value, posts=posts)

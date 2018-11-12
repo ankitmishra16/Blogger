@@ -18,6 +18,7 @@
                         </div>
                     {% endif %}
                 </div>
+                <div class="tag">{{ post.user_tag }}</div>
                 <h2 class="article-title">{{ post.title }}</h2>
                     <div id="inside-blog">
                     {{ post.content|safe }}
@@ -25,7 +26,15 @@
 
             </div>
         </article>
-
+        <!--Like View-->
+        {% if current_user.is_authenticated %}
+            {% if current_user.has_liked_post(post) %}
+                <a href="{{ url_for('like_action',post_id=post.id,action='unlike') }}">Unlike</a>
+            {% else %}
+                <a href="{{ url_for('like_action',post_id=post.id,action='like') }}">Like</a>
+            {% endif %}
+        {% endif %}
+        {{ post.likes.count() }} Likes
 
         <div class="content-section">
             <form method="POST" action="">
