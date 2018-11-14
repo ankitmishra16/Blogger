@@ -355,3 +355,17 @@ def error_404(error):
 @app.errorhandler(403)
 def error_403(error):
     return render_template('403.html'),403
+
+@app.route("/user/<string:username>/comments")
+def comments_posts(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = (db.session.query(Post.id,Post.title,Comment.id,Comment.body)
+            .join(Comment)
+            .filter(Post.id==Comment.post_id))
+
+    rows = (db.session.query(Post.id,Post.title,Comment.id,Comment.body)
+            .join(Comment)
+            .filter(Post.id==Comment.post_id)).count()
+
+    result = dict(zip([i for i in range(rows)],posts))
+    return render_template('comments_posts.html',result=result)

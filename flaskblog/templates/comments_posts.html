@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+
+  {% set index = namespace(a=0) %}
+  {% for item in result %}
+  <br>
+  {% if result[item][0] != index.a %}
+  {% set index.a = result[item][0]%}
+    <br>
+    <a href="{{ url_for('post', post_id=result[item][0] ) }}">{{ result[item][1] }}</a>
+    <div class="post-description">
+        <p>{{ result[item][3] }}</p>
+    </div>
+
+  {% else %}
+  <div class="post-description">
+      <p>{{ result[item][3] }}</p>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% endblock %}

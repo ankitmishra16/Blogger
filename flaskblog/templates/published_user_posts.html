@@ -21,16 +21,19 @@
         {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
             {% if page_num %}
                 {% if posts.page == page_num %}
-                    <a class="btn btn-info mb-4" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                    <a class="btn btn-info mb-4" href="{{ url_for('published_user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
                 {% else %}
-                    <a class="btn btn-outline-info mb-4" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                    <a class="btn btn-outline-info mb-4" href="{{ url_for('published_user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
                 {% endif %}
             {% else %}
                 ...
             {% endif %}
         {% endfor %}
 
-    {% block sidebar %}
+
+
+{% endblock %}
+{% block sidebar %}
         <img class="imgsrc rounded-circle" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
         <h2 align="center">{{ current_user.username }}</h2>
         <h3 align="center">About me</h3>
@@ -39,7 +42,4 @@
             <p align="center">{{ current_user.aboutme }}</p>
         {% endif %}
     {% endblock %}
-
-{% endblock %}
-
 

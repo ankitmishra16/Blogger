@@ -34,11 +34,11 @@
         <div class="card" style="width: 18rem;position: fixed">
           <img class="card-img-top" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">{{ current_user.username }}</h5>
+            <h5 class="card-title">{{ user.username }}</h5>
             {% if current_user.aboutme %}
                 <h6 class="card-subtitle mb-2 text-muted">About me</h6>
                 <hr>
-                <p class="card-text">{{ current_user.aboutme }}</p>
+                <p class="card-text">{{ user.aboutme }}</p>
             {% endif %}
 {#            <a href="#" class="btn btn-primary">Go somewhere</a>#}
           </div>

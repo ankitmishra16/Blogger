@@ -73,6 +73,7 @@
 
                 <a href="{{ url_for('published_user_posts', username=current_user.username) }}"><li class="list-group-item">View Published Posts</li></a>
 
+                  <a href="{{ url_for('comments_posts', username=current_user.username) }}"><li class="list-group-item">All Comments</li></a>
               </ul>
             </div>
     {% else %}
