@@ -10,17 +10,36 @@ hr {
 }
 
 body {
-  background: url(images/bg-01.jpg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
+/*  background-color: #ffffff;
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  !*
+  overflow: hidden;
+  *!
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   height: 100%;
+  position: fixed;
+  width: 100%;
+  padding-top: 5%;*/
+    background: #ffffff;
+    height: 100%;
     padding-top: 5%;
 }
+
+/*
+main{
+   height: 100%;
+}
+*/
+
+/*
 .ui-widget {
     padding-top: 3%;
 }
+*/
+
 #collapsibleNavbar{
   font-family: 'Poppins', sans-serif;
   color: #222;
@@ -55,8 +74,7 @@ p {
   -o-transition:.5s;
   -moz-transition:.5s;
   -webkit-transition:.5s;
-  /* ...and now for the proper property */
-  transition:.5s;
+   transition:.5s;
 }
 
 a.article-title:hover {
@@ -66,7 +84,7 @@ a.article-title:hover {
 
 .article-content {
   font-weight:100;
-  font-family:'Open Sans'/*,'Helvetica Neue',Helvetica,Arial,sans-serif*/;
+  font-family:'Open Sans';
 }
 
 .article-content1 {
@@ -119,9 +137,9 @@ a.article-title:hover {
 
 .navbar{
   padding: 0.8rem;
-    position: fixed;
+ /*   position: fixed;
     top: 0;
-    width: 100%;
+    width: 100%;*/
 }
 
 .navbar-nav li{
@@ -132,7 +150,7 @@ a.article-title:hover {
   font-size: 1.1em;
 }
 
-.outside-header {
+/*.outside-header {
   padding-top: 20px;
   padding-left: 10px;
 }
@@ -144,4 +162,21 @@ a.article-title:hover {
 .card-title {
     font-weight: bold;
     font-size: xx-large;
+}*/
+
+[type=radio] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + img {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+  outline: 2px solid #f00;
 }

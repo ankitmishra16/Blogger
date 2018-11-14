@@ -15,94 +15,78 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login_register.css') }}">
 
-    <header class="site-header">
-        <nav class="navbar navbar-expand-md sticky-top navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/home"><img src="{{ url_for('static', filename= 'icons/Blogger.ico')}}"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                    <ul class="navbar-nav ml-auto mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-                        </li>
-                        {% if current_user.is_authenticated %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('new_post') }}">Create New Blog</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('account') }}">View Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                            </li>
-                        {% endif %}
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
   </head>
 
   <body class="text-center">
-    <form class="form-signin" method="post" action="">
-        {{ form.hidden_tag() }}
-      <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-            <fieldset class="form-group">
-                <legend class="h3 mb-3 font-weight-normal">Log In</legend>
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}">
-                                    {{ message }}
+    <div class="test row">
+        <div class="temp col-md-8">
+        </div>
+        <div class="col-md-4">
+            <nav class="navbar navbar-expand-md sticky-top navbar-light">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='icons/home.png') }}"></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='icons/signup.png') }}"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <form class="form-signin" method="post" action="">
+                {{ form.hidden_tag() }}
+              <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+                    <fieldset class="form-group">
+                        <legend class="h3 mb-3 font-weight-normal">Log In</legend>
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        <div class="form-group">
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
                                 </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                <div class="form-group">
-                    {% if form.email.errors %}
-                        {{ form.email(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.email.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
+                            {% else %}
+                                {{ form.email(class="form-control form-control-lg") }}
+                            {% endif %}
                         </div>
-                    {% else %}
-                        {{ form.email(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {% if form.password.errors %}
-                        {{ form.password(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
+                        <div class="form-group">
+                            {% if form.password.errors %}
+                                {{ form.password(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.password(class="form-control form-control-lg") }}
+                            {% endif %}
                         </div>
-                    {% else %}
-                        {{ form.password(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-check">
-                    {{ form.remember(class="form-check-input") }}
-                    {{ form.remember.label(class="form-check-label") }}
-                </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
-                <small class="text-muted ml-2">
-                    <a href="{{ url_for('reset_request') }}">Forgot Password?</a>
-                </small>
-            </div>
-    </form>
+                        <div class="form-check">
+                            {{ form.remember(class="form-check-input") }}
+                            {{ form.remember.label(class="form-check-label") }}
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
+                        <small class="text-muted ml-2">
+<!--                             <a href="{{ url_for('reset_request') }}">Forgot Password?</a>
+ -->                        </small>
+                    </div>
+            </form>
+        </div>
+    </div>
   </body>
 </html>

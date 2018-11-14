@@ -11,6 +11,7 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 def choice_query():
     return Choice.query
 
+
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)], render_kw={"placeholder": "UserName"})
@@ -66,7 +67,9 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = CKEditorField('Content', validators=[DataRequired()])
-    user_tag = QuerySelectField('Tag', query_factory=choice_query, allow_blank=True,get_label='name',validators=[DataRequired()])
+    user_tag = QuerySelectField('Tag', query_factory=choice_query, allow_blank=True, get_label='name',
+                                validators=[DataRequired()])
+    theme = RadioField('Theme', choices=[('1', 'one'), ('2', 'two'), ('3', 'three')], validators=[DataRequired()])
     submit = SubmitField('Publish')
     save = SubmitField('Save for Later')
 
@@ -92,6 +95,3 @@ class ResetPasswordForm(FlaskForm):
 class AddCommentForm(FlaskForm):
     body = StringField('Body', validators=[DataRequired()])
     submit = SubmitField("Post")
-
-
-

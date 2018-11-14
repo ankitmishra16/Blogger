@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='post.css') }}">
+{% extends "layout.html" %}
 {% block content %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
@@ -27,14 +27,16 @@
             </div>
         </article>
         <!--Like View-->
-        {% if current_user.is_authenticated %}
-            {% if current_user.has_liked_post(post) %}
-                <a href="{{ url_for('like_action',post_id=post.id,action='unlike') }}">Unlike</a>
-            {% else %}
-                <a href="{{ url_for('like_action',post_id=post.id,action='like') }}">Like</a>
+        <div class="container row">
+            {% if current_user.is_authenticated %}
+                {% if current_user.has_liked_post(post) %}
+                    <a href="{{ url_for('like_action',post_id=post.id,action='unlike') }}"><i class="fa fa-thumbs-down" style="font-size: 50px;cursor: pointer;"></i></a>
+                {% else %}
+                    <a href="{{ url_for('like_action',post_id=post.id,action='like') }}"><i class="fa fa-thumbs-up" style="font-size: 50px;cursor: pointer;"></i></a>
+                {% endif %}
             {% endif %}
-        {% endif %}
-        {{ post.likes.count() }} Likes
+            <p style="font-size: 25px; padding: 10px ">{{ post.likes.count() }}</p>
+        </div>
 
         <div class="content-section">
             <form method="POST" action="">

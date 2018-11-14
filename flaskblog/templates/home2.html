@@ -1,54 +1,44 @@
 {% extends "layout.html" %}
 {% block content %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
-    <div class="blog-grids" id="grid-up">
-    {% for post in posts.items %}
-        <div class="grid">
-            <div class="entry-media">
-                <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-            </div>
-            <div class="entry-body">
-                <span class="cat">inspiration</span>
-                <h3><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h3>
-                <div class="article-metadata">
-                    <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+    <div class="container-fluid" style="max-width: 3000px;">
+        <div class="row masonry-container">
+        {% for post in posts.items %}
+            <div class="item border">
+                <div class="thumbnail">
+                    <div class="entry-media">
+                        <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+                    </div>
+                    <div class="entry-body">
+                        <span class="cat">{{ post.user_tag }}</span>
+                        <h3><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                        <div class="article-metadata">
+                            <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+                            <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                        </div>
+                        <p>{{ post.content|safe|striptags|truncate(100) }}</p>
+                    </div>
+                    <div class="footer-copyright text-center py-3">
+                        <a href="{{ url_for('post', post_id=post.id) }}">Read More</a>
+                    </div>
                 </div>
-                <p>
-                    {#{% for item in post.content.split('\n')[:5] %}#}
-{#
-                        {% if "img" not in item  %}
-#}
-                            {{ post.content|safe|striptags|truncate(100) }}
-{#
-                        {% endif %}
-#}
-{#
-                    {% endfor %}
-#}
-                </p>
             </div>
-            {#<p class="read-more-date">
-                <a href="{{ url_for('post', post_id=post.id) }}">Read More..</a>
-            </p>#}
-            <div class="footer-copyright text-center py-3">
-                <a href="{{ url_for('post', post_id=post.id) }}">Read More</a>
-            </div>
+        {% endfor %}
         </div>
-    {% endfor %}
     </div>
-    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-                {% if page_num %}
-                    {% if posts.page == page_num %}
-                        <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
-                    {% else %}
-                        <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
-                    {% endif %}
-                {% else %}
-                    ...
-                {% endif %}
-            {% endfor %}
-{% endblock %}
+
+    <div class="page-load-status">
+        <div class="loader-ellips infinite-scroll-request">
+            <span class="loader-ellips__dot"></span>
+            <span class="loader-ellips__dot"></span>
+            <span class="loader-ellips__dot"></span>
+            <span class="loader-ellips__dot"></span>
+        </div>
+<!--         <p class="infinite-scroll-last">End of content</p>
+        <p class="infinite-scroll-error">No more pages to load</p> -->
+    </div>
+
+{% endblock content %}
 
 {% block sidebar %}
     {% if current_user.is_authenticated %}
@@ -60,14 +50,24 @@
                         <h4 style="align-content: center; font: diagonal-fractions">Popular Posts</h4>
                     </a>
                 </div>
+                {#<div class="collapse" id="popular_posts">
+                  {% if result['one'][0] is not none %}
+                      <a href="{{ url_for('post', post_id=result['one'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['one'][1] }}</li></a>
+                  {% endif %}
+                  {% if result['two'][0] is not none %}
+                      <a href="{{ url_for('post', post_id=result['two'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['two'][1] }}</li></a>
+                  {% endif %}
+                  {% if result['three'][0] is not none %}
+                      <a href="{{ url_for('post', post_id=result['three'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['three'][1] }}</li></a>
+                  {% endif %}
+                  {% if result['four'][0] is not none %}
+                      <a href="{{ url_for('post', post_id=result['four'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['four'][1] }}</li></a>
+                  {% endif %}
+                  {% if result['five'][0] is not none %}
+                      <a href="{{ url_for('post', post_id=result['five'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['five'][1] }}</li></a>
+                  {% endif %}
 
-                {% for popular in query1 %}
-                    {% if popular %}
-                        <div class="collapse" id="popular_posts">
-                            <a href="{{ url_for('post', post_id=popular.post_id) }}"><li class="list-group-item">{{ popular.title }}</li></a>
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                </div>#}
               </ul>
               <ul class="list-group list-group-flush">
                   <div class="card-header" style="background-color: darkcyan">
@@ -85,6 +85,31 @@
 
               </ul>
             </div>
+    {% else %}
+        <ul class="list-group list-group-flush">
+        <div class="card-header" style="background-color: darkcyan">
+            <a data-toggle="collapse" href="#popular_posts" role="button" aria-expanded="false" aria-controls="popular_posts">
+                <h4 style="align-content: center; font: diagonal-fractions">Popular Posts</h4>
+            </a>
+        </div>
+        {#<div class="collapse" id="popular_posts">
+          {% if result['one'][0] is not none %}
+          <a href="{{ url_for('post', post_id=result['one'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['one'][1] }}</li></a>
+          {% endif %}
+          {% if result['two'][0] is not none %}
+          <a href="{{ url_for('post', post_id=result['two'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['two'][1] }}</li></a>
+          {% endif %}
+          {% if result['three'][0] is not none %}
+          <a href="{{ url_for('post', post_id=result['three'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['three'][1] }}</li></a>
+          {% endif %}
+          {% if result['four'][0] is not none %}
+          <a href="{{ url_for('post', post_id=result['four'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['four'][1] }}</li></a>
+          {% endif %}
+          {% if result['five'][0] is not none %}
+          <a href="{{ url_for('post', post_id=result['five'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['five'][1] }}</li></a>
+          {% endif %}
+        </div>#}
+        </ul>
     {% endif %}
 
 

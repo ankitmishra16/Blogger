@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+<!--comment added by vivek-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{{ url_for('static', filename= 'icons/Blogger.ico')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+{#
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"> -->
+#}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='post2.css') }}">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+
+
+    {% if title %}
+        <title>Blogger - {{ title }}</title>
+    {% else %}
+        <title>Blogger</title>
+    {% endif %}
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md fixed-top navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename= 'icons/Blogger.ico')}}"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav ml-auto ">
+                         <li class="nav-item active">
+                            <div class="ui-widget input-group md-form form-sm form-1 pl-0">
+                             <form action="{{ url_for('search')}}" method="post"><input class="form-control my-0 py-1"  autocomplete="on" id="tag" name="tag" type="text" placeholder="Search" style="width: fit-content" aria-label="Search"></form>
+                            </div>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                        </li>
+                        {% if current_user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('new_post') }}">Create New Blog</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('account') }}">View Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+                            </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+</head>
+
+<body>
+    <div class="outside-header">
+        <main role="main" class="container-fluid" style="padding-top: 80px;">
+            <div class="row">
+                 <div class="col-md-9">
+                     {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <div class="container">
+                        <div class="row">
+                          <div class="flip">
+                            <div class="card" style="width: 100%; height: auto;">
+
+                                  <div class="face front" style="width: 100%;" >
+
+                                    <div class="inner"style="width: 100%;" >
+
+                                    <div class="card" style="width: 100%; height: auto;">
+                                        <img class="card-img-top" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}" style="width: 100%">
+
+                                        <h3 class="card-header" style="width: 100%;">{{ post.title }}</h3>
+
+                                        <hr style="color: #0d3b84">
+
+                                        <div class="card-text" style="width: 100%;">Posted by <a href="#">{{ post.author.username }}</a> on {{ post.date_posted.strftime('%Y-%m-%d') }}</div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                  <div class="face back" style="background-color: white; align-content: center;width: 100%">
+
+                                    <div class="card-header">
+                                                <h3 style="text-align: center;">{{ post.title }}</h3>
+                                            </div>
+                                            <div class="card-block" style="text-align: center;">
+                                                {{ post.content|safe }}
+                                            </div>
+                                    </div>
+
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+<!--side bar-->
+                <div class="col-md-3">
+
+    <div class="row">
+        <div class="card" style="width: 100%;">
+            {% if current_user.is_authenticated %}
+            {% if current_user.has_liked_post(post) %}
+                <a href="{{ url_for('like_action',post_id=post.id,action='unlike') }}">Unlike</a>
+            {% else %}
+                <a href="{{ url_for('like_action',post_id=post.id,action='like') }}">Like</a>
+            {% endif %}
+        {% endif %}
+        {{ post.likes.count() }} Likes
+        <div class="content-section">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Comment</legend>
+                    <div class="form-group" >
+                        <!-- {{ form.body.label(class="form-control-label") }} -->
+                        {% if form.body.errors %}
+                            {{ form.body(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.body.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.body(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </form>
+        </div>
+    <!--comments view-->
+        {% if comments %}
+            {% for comment in comments %}
+                    <div class="panel panel-white post panel-shadow">
+                        <div class="post-heading">
+                            <div class="pull-left image">
+                                {% if comment.comment_user_id %}
+                                    <a href="{{ url_for('user_posts', username=comment.username) }}">
+                                        <img src="{{ url_for('static', filename='profile_pics/' + comment.commentor.image_file) }}" class="img-circle avatar" alt="{{ comment.username }}'s profile">
+                                    </a>
+                                {% else %}
+                                    <img src="{{ url_for('static', filename='profile_pics/default.jpg') }}" class="img-circle avatar" alt="user profile image">
+                                {% endif %}
+
+                            </div>
+                            <div class="pull-left meta">
+                                <div class="title h5">
+                                    {% if comment.comment_user_id %}
+                                        <a href="{{ url_for('user_posts', username=comment.username) }}"><b>{{ comment.username }}</b></a>
+                                    {% else %}
+                                        <b id="temp">{{ comment.username }}</b>
+                                    {% endif %}
+                                    made a post.
+                                </div>
+                                <h6 class="text-muted time">{{ comment.timestamp.strftime('%Y-%m-%d') }}</h6>
+                            </div>
+                        </div>
+                        <div class="post-description">
+                            <p>{{ comment.body }}</p>
+                        </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {#{% if comments %}
+            {% for comment in comments %}
+                {{ comment.body }}
+                <br>
+                {% if comment.timestamp %}
+                    {{ comment.timestamp.strftime('%Y-%m-%d') }}
+                {% else %}
+                {% endif %}
+                <br>
+                {{ comment.username }}
+                <br>
+            {% endfor %}
+        {% endif %}#}
+    <!-- </li> -->
+    <!-- </div> -->
+    </div>
+</div>
+
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+                            <input class="btn btn-danger" type="submit" value="Delete">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+                </div>
+                </div>
+        </main>
+    </div>
+
+    <script>
+        (function( $ ) {
+            var $container = $('.masonry-container');
+            $container.imagesLoaded( function () {
+            $container.masonry({
+                columnWidth: '.item',
+                itemSelector: '.item',
+                percentPosition: true,
+                gutter: 10
+            });
+
+            var msnry = $container.data('masonry');
+            msnry.needsResizeLayout = function() {
+                return true;
+            };
+
+            $('a[data-toggle=tab]').each(function () {
+                var $this = $(this);
+                $this.on('shown.bs.tab', function () {
+                    $container.imagesLoaded( function () {
+                        $container.masonry({
+                            columnWidth: '.item',
+                            itemSelector: '.item'
+                        });
+                    });
+                });
+            });
+
+            var infScroll = new InfiniteScroll( '.masonry-container', {
+                path: function() {
+                    var pageNumber = ( this.loadCount + 2 ) ;
+                    return '/home?page=' + pageNumber;
+                    },
+                append: '.item',
+                outlayer: msnry,
+                status: '.page-load-status',
+            });
+
+            infScroll.loadNextPage();
+
+            $( function() {
+                var availableTags = [
+                    "Technology",
+                    "Science",
+                    "Fashion",
+                    "Food",
+                    "Sport",
+                    "Adventure",
+                    "Other"
+                ];
+                $( "#tag" ).autocomplete({
+                    source: availableTags
+                });
+            } );
+
+        });
+        })(jQuery);
+
+
+            $(function() {
+           $(".flip").click(function(){
+                $(this).find(".card").toggleClass("flipped");
+
+        });
+       });
+</script>
+</body>
+</html>

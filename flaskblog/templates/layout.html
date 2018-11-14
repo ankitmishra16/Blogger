@@ -6,12 +6,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="{{ url_for('static', filename= 'icons/Blogger.ico')}}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css" />
     <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='post.css') }}">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+
 
     {% if title %}
         <title>Blogger - {{ title }}</title>
@@ -19,14 +31,14 @@
         <title>Blogger</title>
     {% endif %}
     <header class="site-header">
-        <nav class="navbar navbar-expand-md sticky-top navbar-light bg-light">
+        <nav class="navbar navbar-expand-md fixed-top navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename= 'icons/Blogger.ico')}}"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                    <ul class="navbar-nav ml-auto mr-auto">
+                    <ul class="navbar-nav ml-auto ">
                          <li class="nav-item active">
                             <div class="ui-widget input-group md-form form-sm form-1 pl-0">
                              <form action="{{ url_for('search')}}" method="post"><input class="form-control my-0 py-1"  autocomplete="on" id="tag" name="tag" type="text" placeholder="Search" style="width: fit-content" aria-label="Search"></form>
@@ -62,10 +74,10 @@
 </head>
 <body>
     <div class="outside-header">
-        <main role="main" class="container-fluid">
+        <main role="main" class="container-fluid" style="padding-top: 80px;">
             <div class="row">
-                <div class="col-md-9">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
+                 <div class="col-md-9">
+                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
                             {% for category, message in messages %}
                                 <div class="alert alert-{{ category }}">
@@ -76,6 +88,7 @@
                     {% endwith %}
                     {% block content %}{% endblock %}
                 </div>
+
                 <div class="col-md-3">
                     {% block sidebar %}{% endblock %}
                 </div>
@@ -83,31 +96,58 @@
         </main>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/js/uikit-icons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/js/uikit.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-        $( function() {
-            var availableTags = [
-                "Technology",
-                "Science",
-                "Fashion",
-                "Food",
-                "Sport",
-                "Adventure",
-                "Other"
-            ];
-            $( "#tag" ).autocomplete({
-                source: availableTags
+        (function( $ ) {
+            var $container = $('.masonry-container');
+            $container.imagesLoaded( function () {
+            $container.masonry({
+                columnWidth: '.item',
+                itemSelector: '.item',
+                percentPosition: true,
+                gutter: 10
             });
-        } );
+            var msnry = $container.data('masonry');
+            msnry.needsResizeLayout = function() {
+                return true;
+            };
+            $('a[data-toggle=tab]').each(function () {
+                var $this = $(this);
+                $this.on('shown.bs.tab', function () {
+                    $container.imagesLoaded( function () {
+                        $container.masonry({
+                            columnWidth: '.item',
+                            itemSelector: '.item'
+                        });
+                    });
+                });
+            });
+            var infScroll = new InfiniteScroll( '.masonry-container', {
+                path: function() {
+                    var pageNumber = ( this.loadCount + 2 ) ;
+                    return '/home?page=' + pageNumber;
+                    },
+                append: '.item',
+                outlayer: msnry,
+                status: '.page-load-status',
+            });
+            infScroll.loadNextPage();
+            $( function() {
+                var availableTags = [
+                    "Technology",
+                    "Science",
+                    "Fashion",
+                    "Food",
+                    "Sport",
+                    "Adventure",
+                    "Other"
+                ];
+                $( "#tag" ).autocomplete({
+                    source: availableTags
+                });
+            } );
+        });
+        })(jQuery);
+
     </script>
 </body>
 </html>

@@ -25,7 +25,10 @@ def home():
               .group_by(PostLike.post_id, PostLike.title)
               .order_by(func.count(PostLike.post_id).desc())
               .limit(5))
-    return render_template('home2.html', posts=posts, query1=query1)
+
+    result = dict(zip(['one', 'two', 'three', 'four', 'five'], query1))
+
+    return render_template('home2.html', posts=posts, result=result)
 
 
 @app.route("/about")
@@ -109,9 +112,9 @@ def account():
 @login_required
 def new_post():
     form = PostForm()
-
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user, user_tag=form.user_tag.data.name)
+        post = Post(title=form.title.data, content=form.content.data, author=current_user,
+                    user_tag=form.user_tag.data.name, theme=form.theme.data)
         if form.submit.data:
             print("save")
             post.published = True
@@ -126,15 +129,23 @@ def new_post():
             return redirect(url_for('home'))
 
     return render_template('create_post.html', title='New Post',
-                           form=form, legend='New Post')
+                           form=form, legend='New Post', new=True)
 
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
+    print(post.theme)
     comments = Comment.query.filter_by(post_id=post_id)
     form = AddCommentForm()
-    return render_template('post.html', title=post.title, post=post, form=form, comments=comments)
+    if post.theme == 2:
+        return render_template('post2.html', title=post.title, post=post, form=form, comments=comments)
+    elif post.theme == 3:
+        return render_template('post3.html', title=post.title, post=post, form=form, comments=comments)
+    else:
+        return render_template('post.html', title=post.title, post=post, form=form, comments=comments)
+
+
 
 
 @app.route("/post/<int:post_id>/publish", methods=['GET', 'POST'])
@@ -149,6 +160,8 @@ def publish_post(post_id):
     return redirect(url_for('post', post_id=post.id))
 
 
+
+
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
@@ -160,6 +173,10 @@ def update_post(post_id):
         post.title = form.title.data
         post.content = form.content.data
         post.user_tag = form.user_tag.data.name
+        theme = request.form['theme']
+        post.theme = int(theme)
+        print('printing theme in post')
+        print(post.theme)
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id))
@@ -167,8 +184,10 @@ def update_post(post_id):
         form.title.data = post.title
         form.content.data = post.content
         form.user_tag.data = post.user_tag
+        form.theme.data = post.theme
+        print(form.theme.data)
     return render_template('create_post.html', title='Update Post',
-                           form=form, legend='Update Post')
+                           form=form, legend='Update Post', new=False)
 
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
@@ -187,17 +206,18 @@ def delete_post(post_id):
 def user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user)\
-        .order_by(Post.date_posted.desc())\
+    posts = Post.query.filter_by(author=user) \
+        .order_by(Post.date_posted.desc()) \
         .paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
+
 
 @app.route("/user/<string:username>/all")
 def all_user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user)\
-        .order_by(Post.date_posted.desc())\
+    posts = Post.query.filter_by(author=user) \
+        .order_by(Post.date_posted.desc()) \
         .paginate(page=page, per_page=5)
     return render_template('all_user_posts.html', posts=posts, user=user)
 
@@ -206,8 +226,8 @@ def all_user_posts(username):
 def published_user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user, published=True)\
-        .order_by(Post.date_posted.desc())\
+    posts = Post.query.filter_by(author=user, published=True) \
+        .order_by(Post.date_posted.desc()) \
         .paginate(page=page, per_page=5)
     return render_template('published_user_posts.html', posts=posts, user=user)
 
@@ -217,10 +237,11 @@ def published_user_posts(username):
 def unpublished_user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user, published=False)\
-        .order_by(Post.date_posted.desc())\
+    posts = Post.query.filter_by(author=user, published=False) \
+        .order_by(Post.date_posted.desc()) \
         .paginate(page=page, per_page=5)
     return render_template('unpublished_user_posts.html', posts=posts, user=user)
+
 
 def send_reset_email(user):
     token = user.get_reset_token()
@@ -266,21 +287,22 @@ def reset_token(token):
     return render_template('reset_token.html', title='Reset Password', form=form)
 
 
-@app.route("/post/<int:post_id>",methods=['GET','POST'])
+@app.route("/post/<int:post_id>", methods=['GET', 'POST'])
 def comment_post(post_id):
     post = Post.query.get_or_404(post_id)
     form = AddCommentForm()
     if form.validate_on_submit():
         db.create_all()
         if current_user.is_authenticated:
-            comment = Comment(body=form.body.data,post_id=post_id,username=current_user.username, comment_user_id=current_user.id)
+            comment = Comment(body=form.body.data, post_id=post_id, username=current_user.username,
+                              comment_user_id=current_user.id)
         else:
-            comment = Comment(body=form.body.data,post_id=post_id,username='Anonymous')
+            comment = Comment(body=form.body.data, post_id=post_id, username='Anonymous')
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added to the post', 'success')
         return redirect(url_for('post', post_id=post_id))
-    return render_template('post.html', title=post.title, form=form ,post=post)
+    return render_template('post.html', title=post.title, form=form, post=post)
 
 
 @app.route('/files/<filename>')
@@ -311,6 +333,7 @@ def like_action(post_id, action):
         current_user.unlike_post(post)
         db.session.commit()
     return redirect(request.referrer)
+
 
 @app.route("/search", methods=['Post'])
 def search():

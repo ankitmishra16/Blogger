@@ -62,11 +62,11 @@ class Post(db.Model):
     comments = db.relationship('Comment', backref='post_comments', lazy=True)
     user_tag = db.Column(db.Text)
     likes = db.relationship('PostLike', backref='post', lazy='dynamic')
-
+    theme = db.Column(db.Integer, default=1)
 
 
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}', '{self.published}', '{self.user_tag}')"
+        return f"Post('{self.title}', '{self.date_posted}', '{self.published}', '{self.user_tag}', '{self.theme}')"
 
 
 class Comment(db.Model):

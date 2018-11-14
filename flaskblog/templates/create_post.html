@@ -34,6 +34,55 @@
                         {% endif %}
                     </div>
                     <div class="form-group">
+                        {{ form.theme.label(class="form-control-label") }}
+{#
+                        {% if form.theme.errors %}
+#}
+{#                            {{ form.theme(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.theme.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>#}
+{#
+                        {% else %}
+#}
+
+                            {% if not form.theme.data %}
+                                        <script>console.log('true')</script>
+                                     {% endif %}
+                            <label>
+                              <input type="radio" name="theme" value="1"
+                                      {% if form.theme.data == 1 or new %}
+                                        checked
+                                     {% endif %}
+                                   required>
+                              <img src="http://placehold.it/40x60/0bf/fff&text=A">
+                            </label>
+
+                            <label>
+                              <input type="radio" name="theme" value="2"
+                              {% if form.theme.data == 2 %}
+                                        checked
+                                     {% endif %}
+                              >
+                              <img src="http://placehold.it/40x60/b0f/fff&text=B">
+                            </label>
+
+                            <label>
+                              <input type="radio" name="theme" value="3"
+                                {% if form.theme.data == 3 %}
+                                        checked
+                                     {% endif %}
+                              >
+                              <img src="http://placehold.it/40x60/b0f/fff&text=B">
+                            </label>
+                            {#{{ form.theme(class="form-control form-control-lg") }}#}
+{#
+                        {% endif %}
+#}
+                    </div>
+                    <div class="form-group">
                         {{ form.content.label(class="form-control-label") }}
                         {% if form.content.errors %}
                             {{ form.content(class="form-control form-control-lg is-invalid") }}
