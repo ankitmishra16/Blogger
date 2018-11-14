@@ -23,10 +23,11 @@ def home():
     posts = Post.query.filter_by(published=True).order_by(Post.date_posted.desc()).paginate(page=page, per_page=6)
     query1 = (db.session.query(PostLike.post_id, PostLike.title, func.count(PostLike.post_id))
               .group_by(PostLike.post_id, PostLike.title)
+              .having(func.count(PostLike.post_id) > 0)
               .order_by(func.count(PostLike.post_id).desc())
               .limit(5))
 
-    result = dict(zip(['one', 'two', 'three', 'four', 'five'], query1))
+    result = dict(zip([0, 1, 2, 3, 4], query1))
 
     return render_template('home2.html', posts=posts, result=result)
 
@@ -135,7 +136,13 @@ def new_post():
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
+    print(post.user_id)
+    print(post.published)
+    print(current_user)
     print(post.theme)
+    if not post.published:
+        if not post.author == current_user:
+            abort(403)
     comments = Comment.query.filter_by(post_id=post_id)
     form = AddCommentForm()
     if post.theme == 2:
@@ -340,3 +347,11 @@ def search():
     value = request.form.get('tag')
     posts = Post.query.filter_by(user_tag=value).all()
     return render_template('search_result.html', value=value, posts=posts)
+
+@app.errorhandler(404)
+def error_404(error):
+    return render_template('404.html'),404
+
+@app.errorhandler(403)
+def error_403(error):
+    return render_template('403.html'),403

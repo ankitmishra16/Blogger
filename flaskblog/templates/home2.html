@@ -50,24 +50,14 @@
                         <h4 style="align-content: center; font: diagonal-fractions">Popular Posts</h4>
                     </a>
                 </div>
-                {#<div class="collapse" id="popular_posts">
-                  {% if result['one'][0] is not none %}
-                      <a href="{{ url_for('post', post_id=result['one'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['one'][1] }}</li></a>
-                  {% endif %}
-                  {% if result['two'][0] is not none %}
-                      <a href="{{ url_for('post', post_id=result['two'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['two'][1] }}</li></a>
-                  {% endif %}
-                  {% if result['three'][0] is not none %}
-                      <a href="{{ url_for('post', post_id=result['three'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['three'][1] }}</li></a>
-                  {% endif %}
-                  {% if result['four'][0] is not none %}
-                      <a href="{{ url_for('post', post_id=result['four'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['four'][1] }}</li></a>
-                  {% endif %}
-                  {% if result['five'][0] is not none %}
-                      <a href="{{ url_for('post', post_id=result['five'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['five'][1] }}</li></a>
-                  {% endif %}
+                  <div class="collapse" id="popular_posts">
+                      {% for item in result %}
+                          <ul class="list-group">
+                              <a href="{{ url_for('post', post_id=result[item][0] ) }}"><li class="list-group-item list-group-item-light">{{ result[item][1] }}</li></a>
+                          </ul>
+                      {% endfor %}
 
-                </div>#}
+                </div>
               </ul>
               <ul class="list-group list-group-flush">
                   <div class="card-header" style="background-color: darkcyan">
@@ -92,23 +82,11 @@
                 <h4 style="align-content: center; font: diagonal-fractions">Popular Posts</h4>
             </a>
         </div>
-        {#<div class="collapse" id="popular_posts">
-          {% if result['one'][0] is not none %}
-          <a href="{{ url_for('post', post_id=result['one'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['one'][1] }}</li></a>
-          {% endif %}
-          {% if result['two'][0] is not none %}
-          <a href="{{ url_for('post', post_id=result['two'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['two'][1] }}</li></a>
-          {% endif %}
-          {% if result['three'][0] is not none %}
-          <a href="{{ url_for('post', post_id=result['three'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['three'][1] }}</li></a>
-          {% endif %}
-          {% if result['four'][0] is not none %}
-          <a href="{{ url_for('post', post_id=result['four'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['four'][1] }}</li></a>
-          {% endif %}
-          {% if result['five'][0] is not none %}
-          <a href="{{ url_for('post', post_id=result['five'][0] ) }}"><li class="list-group-item list-group-item-light">{{ result['five'][1] }}</li></a>
-          {% endif %}
-        </div>#}
+        {% for item in result %}
+        <ul class="list-group">
+          <a href="{{ url_for('post', post_id=result[item][0] ) }}"><li class="list-group-item list-group-item-light">{{ result[item][1] }}</li></a>
+        </ul>
+        {% endfor %}
         </ul>
     {% endif %}
 

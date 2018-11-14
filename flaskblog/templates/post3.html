@@ -52,10 +52,13 @@
                                 <a class="nav-link" href="{{ url_for('new_post') }}">Create New Blog</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('account') }}">View Profile</a>
+                                <a class="nav-link" href="{{ url_for('account') }}">Edit Profile</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('account') }}"><img class="rounded-image" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" style="border-radius: 50%;width: 25px; height: 25px; padding-top: 0"></a>
                             </li>
                         {% else %}
                             <li class="nav-item">
@@ -103,7 +106,7 @@
 
                                         <hr style="color: #0d3b84">
 
-                                        <div class="card-text" style="width: 100%;">Posted by <a href="#">{{ post.author.username }}</a> on {{ post.date_posted.strftime('%Y-%m-%d') }}</div>
+                                        <div class="card-text" style="width: 100%;">Posted by <a href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a> on {{ post.date_posted.strftime('%Y-%m-%d') }}</div>
                                         </div>
                                       </div>
                                     </div>
