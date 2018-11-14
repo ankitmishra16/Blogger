@@ -1,45 +1,78 @@
 {% extends "layout.html" %}
 {% block content %}
-        <h1 class="mb-3">Unpublished Posts by {{ user.username }} ({{ posts.total }})</h1>
+        <h1 class="mb-3" style="color: white;" align="center">Unpublished Posts by {{ user.username }} ({{ posts.total }})</h1>
         {% if posts.total == 0 %}
             <h3 align="center">No Unublished Posts</h3>
         {% else %}
-        {% for post in posts.items %}
-            <article class="media content-section">
-                <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-                <div class="media-body">
-                    <div class="article-metadata">
-                        <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-                        <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
+        <div class="container-fluid" style="max-width: 3000px;">
+            <div class="row masonry-container">
+            {% for post in posts.items %}
+                <div class="item border">
+                    <div class="thumbnail">
+                        <div class="entry-media">
+                        {% if post.user_tag == 'Technology' %}
+                            <img src="{{ url_for('static', filename='images/technology.jpg') }}">
+                        {% elif post.user_tag == 'Adventure' %}
+                            <img src="{{ url_for('static', filename='images/adventure.jpg') }}">
+                        {% elif post.user_tag == 'Science' %}
+                            <img src="{{ url_for('static', filename='images/science.jpg') }}">
+                        {% elif post.user_tag == 'Sport' %}
+                            <img src="{{ url_for('static', filename='images/sports.jpg') }}">
+                        {% elif post.user_tag == 'Fashion' %}
+                            <img src="{{ url_for('static', filename='images/fashion.jpg') }}">
+                        {% elif post.user_tag == 'Food' %}
+                            <img src="{{ url_for('static', filename='images/food.jpg') }}">
+                        {% elif post.user_tag == 'Life' %}
+                            <img src="{{ url_for('static', filename='images/life.jpg') }}">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/others.jpg') }}">
+                        {% endif %}                    
+                        </div>
+                        <div class="entry-body">
+                            <span class="cat">{{ post.user_tag }}</span>
+                            <h3><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                            <div class="article-metadata">
+                                <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+                                <small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
+                            </div>
+                            <p>{{ post.content|safe|striptags|truncate(100) }}</p>
+                        </div>
+                        <div class="footer-copyright text-center py-3">
+                            <a href="{{ url_for('post', post_id=post.id) }}">Read More</a>
+                        </div>
                     </div>
-                    <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
-                    <p class="article-content">{{ post.content|safe }}</p>
                 </div>
-            </article>
-        {% endfor %}
+            {% endfor %}
+            </div>
+        </div>
+
+        <div class="page-load-status">
+            <div class="loader-ellips infinite-scroll-request">
+                <span class="loader-ellips__dot"></span>
+                <span class="loader-ellips__dot"></span>
+                <span class="loader-ellips__dot"></span>
+                <span class="loader-ellips__dot"></span>
+            </div>
+        </div>    
+        <a class="pagination__next" href="{{ url_for('unpublished_user_posts', username=user.username, page=2) }}"></a>
         {% endif %}
-        {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-            {% if page_num %}
-                {% if posts.page == page_num %}
-                    <a class="btn btn-info mb-4" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
-                {% else %}
-                    <a class="btn btn-outline-info mb-4" href="{{ url_for('user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
-                {% endif %}
-            {% else %}
-                ...
-            {% endif %}
-        {% endfor %}
 {% endblock %}
 
-    {% block sidebar %}
-        <img class="imgsrc rounded-circle" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
-        <h2 align="center">{{ current_user.username }}</h2>
-        <h3 align="center">About me</h3>
-        <hr>
-        {% if current_user.aboutme %}
-            <p align="center">{{ current_user.aboutme }}</p>
-        {% endif %}
-    {% endblock %}
-
+{% block sidebar %}
+    <div class="profile">
+        <div class="card" style="width: 18rem;position: fixed">
+          <img class="card-img-top" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{ current_user.username }}</h5>
+            {% if current_user.aboutme %}
+                <h6 class="card-subtitle mb-2 text-muted">About me</h6>
+                <hr>
+                <p class="card-text">{{ current_user.aboutme }}</p>
+            {% endif %}
+          </div>
+        </div>
+    </div>
+{% endblock %}
 
 

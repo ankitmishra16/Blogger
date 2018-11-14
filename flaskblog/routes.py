@@ -344,7 +344,7 @@ def like_action(post_id, action):
 
 @app.route("/search", methods=['Post'])
 def search():
-    value = request.form.get('tag')
+    value = request.form.get('myInput')
     posts = Post.query.filter_by(user_tag=value).all()
     return render_template('search_result.html', value=value, posts=posts)
 
@@ -359,13 +359,15 @@ def error_403(error):
 @app.route("/user/<string:username>/comments")
 def comments_posts(username):
     user = User.query.filter_by(username=username).first_or_404()
-    posts = (db.session.query(Post.id,Post.title,Comment.id,Comment.body)
-            .join(Comment)
-            .filter(Post.id==Comment.post_id))
+    id = db.session.query(User.id).filter(User.username == username)
+    posts = (db.session.query(Post.id, Post.title, Comment.id, Comment.body)
+             .join(Comment)
+             .filter(Post.id == Comment.post_id)
+             .filter(Post.user_id == id))
 
-    rows = (db.session.query(Post.id,Post.title,Comment.id,Comment.body)
+    rows = (db.session.query(Post.id, Post.title, Comment.id, Comment.body)
             .join(Comment)
-            .filter(Post.id==Comment.post_id)).count()
+            .filter(Post.id == Comment.post_id)).count()
 
-    result = dict(zip([i for i in range(rows)],posts))
-    return render_template('comments_posts.html',result=result)
+    result = dict(zip([i for i in range(rows)], posts))
+    return render_template('comments_posts.html', result=result)

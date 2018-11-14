@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+
 .panel {
     margin-bottom: 20px;
     background-color: #fff;
@@ -157,9 +159,12 @@ header.masthead .page-heading .subheading,header.masthead .site-heading .subhead
 
 body{
   padding-top:50px;
-  background: #555;
+  background: #343a40;
 }
 
+main{
+  height: 100%;
+}
 
 .flip {
   -webkit-perspective: 800;
@@ -191,15 +196,14 @@ body{
    position: absolute;
    width: 270px;
    z-index: 1;
-   background-image: url("./bck.JPG");/*url("{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}");*/
    background-size: 100%;
 }
 .flip .card .front img{
-  width: 270px;
+  width: 100%;
   height: 100%;
 }
 .flip .card .img {
-   position: relaitve;
+   position: relative;
    width: 270px;
    height: 178px;
    z-index: 1;
@@ -261,4 +265,60 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-link{
   font-size: 1.1em;
+}
+
+[type=radio] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + img {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+  outline: 2px solid #f00;
+}
+
+.search-container button:hover {
+  background: #ccc;
+}
+
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #e9e9e9; 
+}
+
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
 }

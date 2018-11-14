@@ -7,14 +7,30 @@
             <div class="item border">
                 <div class="thumbnail">
                     <div class="entry-media">
-                        <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+                        {% if post.user_tag == 'Technology' %}
+                            <img src="{{ url_for('static', filename='images/technology.jpg') }}">
+                        {% elif post.user_tag == 'Adventure' %}
+                            <img src="{{ url_for('static', filename='images/adventure.jpg') }}">
+                        {% elif post.user_tag == 'Science' %}
+                            <img src="{{ url_for('static', filename='images/science.jpg') }}">
+                        {% elif post.user_tag == 'Sport' %}
+                            <img src="{{ url_for('static', filename='images/sports.jpg') }}">
+                        {% elif post.user_tag == 'Fashion' %}
+                            <img src="{{ url_for('static', filename='images/fashion.jpg') }}">
+                        {% elif post.user_tag == 'Food' %}
+                            <img src="{{ url_for('static', filename='images/food.jpg') }}">
+                        {% elif post.user_tag == 'Life' %}
+                            <img src="{{ url_for('static', filename='images/life.jpg') }}">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/others.jpg') }}">
+                        {% endif %}                    
                     </div>
                     <div class="entry-body">
                         <span class="cat">{{ post.user_tag }}</span>
                         <h3><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h3>
                         <div class="article-metadata">
                             <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-                            <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                            <small class="text-muted">{{ post.date_posted.strftime('%d-%m-%Y') }}</small>
                         </div>
                         <p>{{ post.content|safe|striptags|truncate(100) }}</p>
                     </div>
@@ -34,10 +50,8 @@
             <span class="loader-ellips__dot"></span>
             <span class="loader-ellips__dot"></span>
         </div>
-<!--         <p class="infinite-scroll-last">End of content</p>
-        <p class="infinite-scroll-error">No more pages to load</p> -->
-    </div>
-
+    </div>    
+    <a class="pagination__next" href="{{ url_for('home', page=2) }}"></a>
 {% endblock content %}
 
 {% block sidebar %}
@@ -63,11 +77,7 @@
                   <div class="card-header" style="background-color: darkcyan">
                         <h4 style="align-content: center; font: italic">Tools</h4>
                   </div>
-                <a href="#"><li class="list-group-item">Put the  head here</li></a>
-
                   <a href="{{ url_for('user_posts', username=current_user.username) }}"><li class="list-group-item">View My Profile</li></a>
-
-                <a href="{{ url_for('all_user_posts', username=current_user.username) }}"><li class="list-group-item">All My Posts</li></a>
 
                 <a href="{{ url_for('unpublished_user_posts', username=current_user.username) }}"><li class="list-group-item">View Unpublished Posts</li></a>
 

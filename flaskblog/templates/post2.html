@@ -31,19 +31,23 @@
         <title>Blogger</title>
     {% endif %}
     <header class="site-header">
-        <nav class="navbar navbar-expand-md fixed-top navbar-light bg-light">
+        <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename= 'icons/Blogger.ico')}}"></a>
+                    <form autocomplete="off" action="{{ url_for('search')}}" method="post">
+                        <div class="autocomplete">
+                            <div class="search-container">
+                                <input id="myInput" type="text" name="myInput" placeholder="Search">
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>    
+                    </form>                    
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav ml-auto ">
-                        <li class="nav-item active">
-                            <div class="ui-widget input-group md-form form-sm form-1 pl-0">
-                                <form action="{{ url_for('search')}}" method="post"><input class="form-control my-0 py-1"  autocomplete="on" id="tag" name="tag" type="text" placeholder="Search" style="width: fit-content" aria-label="Search"></form>
-                            </div>
-                        </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{ url_for('home') }}">Home</a>
                         </li>
@@ -99,7 +103,26 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                <header class="masthead" style="background-image: url({{ url_for('static', filename='profile_pics/' + post.author.image_file) }});">
+                        {% if post.user_tag == 'Technology' %}
+                            <header class="masthead" style="background-image: url({{ url_for('static', filename='images/technology.jpg') }});">
+                        {% elif post.user_tag == 'Adventure' %}
+                            <header class="masthead" style="background-image: url({{ url_for('static', filename='images/adventure.jpg') }});">
+                        {% elif post.user_tag == 'Science' %}
+                            <header class="masthead" style="background-image: url({{ url_for('static', filename='images/science.jpg') }});">
+                        {% elif post.user_tag == 'Sport' %}
+                            <header class="masthead" style="background-image: url({{ url_for('static', filename='images/sports.jpg') }});">
+                        {% elif post.user_tag == 'Fashion' %}
+                            <header class="masthead" style="background-image: url({{ url_for('static', filename='images/fashion.jpg') }});">
+                            <img src="{{ url_for('static', filename='images/fashion.jpg') }}">
+                        {% elif post.user_tag == 'Food' %}
+                            <header class="masthead" style="background-image: url({{ url_for('static', filename='images/food.jpg') }});">
+                        {% elif post.user_tag == 'Life' %}
+                            <header class="masthead" style="background-image: url({{ url_for('static', filename='images/life.jpg') }});">
+                        {% else %}
+                            <header class="masthead" style="background-image: url({{ url_for('static', filename='images/others.jpg') }});">
+                            <img src="{{ url_for('static', filename='images/others.jpg') }}">
+                        {% endif %}
+                        
                     <div class="overlay"></div>
                     <div class="container">
                         <div class="row">
@@ -109,7 +132,7 @@
                                     <h2 class="subheading" style="color: white">{{ post.title }}</h2>
                                     <span class="meta">Posted by
                 <a href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-                on {{ post.date_posted.strftime('%Y-%m-%d') }}</span>
+                on {{ post.date_posted.strftime('%d-%m-%Y') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -127,32 +150,6 @@
                         </div>
                     </div>
                 </article>
-                <!-- <article class="media content-section" style="">
-             <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-            <div class="media-body">
-                <div class="article-metadata " style="float: right;">
-                    <a class="mr-2" href="#">{{ post.author.username }}</a>
-                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-                    {% if post.author == current_user %}
-                        <div>
-                            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id) }}">Update</a>
-                            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                            {% if not post.published %}
-                                <script>console.log("yes")</script>
-                                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('publish_post', post_id=post.id) }}">Publish</a>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-                </div>
-                <div class="tag" style="font: bolder;">{{ post.user_tag }}</div>
-                <h2 class="article-title" style="color: #48bc25">{{ post.title }}</h2>
-                    <div id="inside-blog" style="font-style: italic; text-align: center;">
-                    {{ post.content|safe }}
-                    </div>
-
-            </div>
-        </article> -->
                 <!--Like View-->
                 <div class="container row" style="color: #ffffff">
                     {% if current_user.is_authenticated %}
@@ -213,7 +210,7 @@
                                         {% endif %}
                                         made a post.
                                     </div>
-                                    <h6 class="text-muted time">{{ comment.timestamp.strftime('%Y-%m-%d') }}</h6>
+                                    <h6 class="text-muted time">{{ comment.timestamp.strftime('%d-%m-%Y') }}</h6>
                                 </div>
                             </div>
                             <div class="post-description">
@@ -261,22 +258,105 @@
     </main>
 </div>
 <script>
-$( function() {
-                var availableTags = [
-                    "Technology",
-                    "Science",
-                    "Fashion",
-                    "Food",
-                    "Sport",
-                    "Adventure",
-                    "Other"
-                ];
-                $( "#tag" ).autocomplete({
-                    source: availableTags
-                });
+        (function( $ ) {
+             function autocomplete(inp, arr) {
+              /*the autocomplete function takes two arguments,
+              the text field element and an array of possible autocompleted values:*/
+              var currentFocus;
+              /*execute a function when someone writes in the text field:*/
+              inp.addEventListener("input", function(e) {
+                  var a, b, i, val = this.value;
+                  /*close any already open lists of autocompleted values*/
+                  closeAllLists();
+                  if (!val) { return false;}
+                  currentFocus = -1;
+                  /*create a DIV element that will contain the items (values):*/
+                  a = document.createElement("DIV");
+                  a.setAttribute("id", this.id + "autocomplete-list");
+                  a.setAttribute("class", "autocomplete-items");
+                  /*append the DIV element as a child of the autocomplete container:*/
+                  this.parentNode.appendChild(a);
+                  /*for each item in the array...*/
+                  for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                      /*create a DIV element for each matching element:*/
+                      b = document.createElement("DIV");
+                      /*make the matching letters bold:*/
+                      b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                      b.innerHTML += arr[i].substr(val.length);
+                      /*insert a input field that will hold the current array item's value:*/
+                      b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                      /*execute a function when someone clicks on the item value (DIV element):*/
+                      b.addEventListener("click", function(e) {
+                          /*insert the value for the autocomplete text field:*/
+                          inp.value = this.getElementsByTagName("input")[0].value;
+                          /*close the list of autocompleted values,
+                          (or any other open lists of autocompleted values:*/
+                          closeAllLists();
+                      });
+                      a.appendChild(b);
+                    }
+                  }
+              });
+              inp.addEventListener("keydown", function(e) {
+                  var x = document.getElementById(this.id + "autocomplete-list");
+                  if (x) x = x.getElementsByTagName("div");
+                  if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                  } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                  } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                      /*and simulate a click on the "active" item:*/
+                      if (x) x[currentFocus].click();
+                    }
+                  }
+              });
+              function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+              }
+              function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                  x[i].classList.remove("autocomplete-active");
+                }
+              }
+              function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                  if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                  }
+                }
+              }
+              document.addEventListener("click", function (e) {
+                  closeAllLists(e.target);
+              });
+            }
 
+            var countries = ["Technology","Science","Fashion","Food","Sport","Adventure","Travel","Other"];
+            autocomplete(document.getElementById("myInput"), countries);
         })(jQuery);
-
 
 </script>
 </body>

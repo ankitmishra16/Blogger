@@ -3,19 +3,43 @@
 
   {% set index = namespace(a=0) %}
   {% for item in result %}
-  <br>
   {% if result[item][0] != index.a %}
-  {% set index.a = result[item][0]%}
-    <br>
-    <a href="{{ url_for('post', post_id=result[item][0] ) }}">{{ result[item][1] }}</a>
-    <div class="post-description">
-        <p>{{ result[item][3] }}</p>
-    </div>
+    <div class="card" style="width: 100%;">
+    {% set index.a = result[item][0]%}
+      <div class="card-header" style="background-color: #1e60a8">
+       <a href="{{ url_for('post', post_id=result[item][0] ) }}"><h5 style="color: white">{{ result[item][1] }}</h5></a>
+     </div>
+     <ul class="list-group list-group-flush">
+      <div class="post-description">
+        <li class="list-group-item" style="background-color: ">
+          <p>{{ result[item][3] }}</p>
+        </li>
+      </div>
+    <!-- </ul> -->
 
   {% else %}
-  <div class="post-description">
-      <p>{{ result[item][3] }}</p>
-  </div>
+   <!-- <ul class="list-group list-group-flush"> -->
+    <li class="list-group-item" style="background-color: ">
+      <div class="post-description">
+          <p>{{ result[item][3] }}</p>
+      </div>
+    </li>
+  </ul>
+
   {% endif %}
   {% endfor %}
+  {% set index.a = 0 %}
   {% endblock %}
+
+
+
+<!--   <div class="card" style="width: 100%;">
+  <div class="card-header">
+    Featured
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Cras justo odio</li>
+    <li class="list-group-item">Dapibus ac facilisis in</li>
+    <li class="list-group-item">Vestibulum at eros</li>
+  </ul>
+</div> -->
